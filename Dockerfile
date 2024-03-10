@@ -1,10 +1,16 @@
-# alpine -> preguntar chatgpt
-FROM NODE:14-alpine  
+FROM node:14
 
-RUN npm i
+# documentacion de node, -p para crear carpetas si no existen
+RUN mkdir -p /usr/src/app 
 
-# Copia un script de inicialización a la imagen
-COPY ./init.sh /docker-entrypoint-initdb.d/
+#CD
+WORKDIR /usr/src/app 
 
-# Establece permisos de ejecución al script de inicialización
-RUN chmod +x /docker-entrypoint-initdb.d/init.sh
+#Copiar directorio actual dentro del contenedor actual
+COPY . .
+
+RUN npm install
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
