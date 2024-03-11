@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Data() {
-  const [latitud, setLatitud] = useState("");
-  const [longitud, setLongitud] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [resStatus, setResStatus] = useState();
+  const [weather, setWeather] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setResStatus(0);
       let response = await fetch(
-        `http://localhost:5000/api/${latitud}/${longitud}`
+        `http://localhost:5000/api/${latitude}/${longitude}`
       );
-
+      let data = await response.json();
+      console.log(data);
+      setWeather(data.daily[0].summary);
       setResStatus(response.status);
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
@@ -28,23 +31,23 @@ export default function Data() {
           Latitud:
           <input
             type="text"
-            value={latitud}
-            onChange={(e) => setLatitud(e.target.value)}
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
           />
         </label>
         <label>
           Longitud:
           <input
             type="text"
-            value={longitud}
-            onChange={(e) => setLongitud(e.target.value)}
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
           />
         </label>
         <button type="submit">Enviar</button>
       </form>
       {resStatus ? (
         resStatus === 200 ? (
-          <p>Datos obtenidos correctamente</p>
+          <p>{weather}</p>
         ) : (
           <p>Fallo en la llamada, revise los datos introducidos</p>
         )
