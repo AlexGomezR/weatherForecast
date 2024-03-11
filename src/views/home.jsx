@@ -7,10 +7,10 @@ function Home() {
       <h1>Página principal</h1>
       <p>Esta es la página principal de tu aplicación.</p>
       <Link to="/data">
-        <button>Ir a /data</button>
+        <button>Coordenadas</button>
       </Link>
       <Link to="/hours">
-        <button>Ir a /hours</button>
+        <button>Coordenadas + hora</button>
       </Link>
     </div>
   );
