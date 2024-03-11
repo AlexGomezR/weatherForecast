@@ -14,12 +14,12 @@ function Formulario() {
         const response = await fetch(
           `http://localhost:5000/getHours/${hour}/${latitude}/${longitude}`
         );
-        setLatitude("");
-        setLongitude("");
-        setHour("");
         if (response.status === 200) {
           let data = await response.json();
           setMessage(data.weather[0].description);
+          setLatitude("");
+          setLongitude("");
+          setHour("");
         } else {
           setMessage(
             "No se ha encontrado información del tiempo para esa hora"
