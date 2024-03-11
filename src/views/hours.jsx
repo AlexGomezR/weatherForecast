@@ -5,19 +5,28 @@ function Formulario() {
   const [hour, setHour] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [resStatus, setResStatus] = useState();
-  const [weather, setWeather] = useState("");
+  const [message, setMessage] = useState("Introduzca datos");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (hour >= 0 && hour <= 23) {
+      if (hour >= 0 && hour <= 23 && latitude && longitude) {
         const response = await fetch(
           `http://localhost:5000/getHours/${hour}/${latitude}/${longitude}`
         );
-        let data = await response.json();
-        setWeather(data.weather[0].description);
-        setResStatus(response.status);
+        setLatitude("");
+        setLongitude("");
+        setHour("");
+        if (response.status === 200) {
+          let data = await response.json();
+          setMessage(data.weather[0].description);
+        } else {
+          setMessage(
+            "No se ha encontrado información del tiempo para esa hora"
+          );
+        }
+      } else {
+        setMessage("Error al introducir los datos");
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
@@ -54,17 +63,7 @@ function Formulario() {
         </label>
         <button type="submit">Enviar</button>
       </form>
-      {resStatus ? (
-        resStatus === 200 ? (
-          <p>{weather}</p>
-        ) : resStatus === 204 ? (
-          <p>No se ha encontrado información del tiempo para esa hora</p>
-        ) : (
-          <p>Fallo en la llamada, revise la hora introducida</p>
-        )
-      ) : (
-        <p>Introduzca la hora</p>
-      )}
+      {<p>{message}</p>}
       <Link to="/data">
         <button>Ir a la página de data</button>
       </Link>

@@ -15,7 +15,6 @@ export default function Data() {
         `http://localhost:5000/api/${latitude}/${longitude}`
       );
       let data = await response.json();
-      console.log(data);
       setWeather(data.daily[0].summary);
       setResStatus(response.status);
     } catch (error) {
